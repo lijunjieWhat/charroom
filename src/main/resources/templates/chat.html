@@ -138,12 +138,16 @@ you blind bitch</span>
                     "</div>")*/
             }else if(message.type=='SPEAK'){
                 var loginUser = '[[${username}]]'
-                console.log(loginUser)
-                console.log(message.username)
-                console.log(message.msg)
+                if(loginUser==message.username){
                     room.append("<div title=\""+message.username+"\" style='width: 200px;display:block;word-break: break-all;word-wrap: break-word;'   class=\"bubble me\">\n" +
                         "                    "+message.msg+"\n" +
                         "                </div>")
+                }else{
+                    room.append("<div title=\""+message.username+"\" style='width: 200px;display:block;word-break: break-all;word-wrap: break-word;'   class=\"bubble you\">\n" +
+                        "                    "+message.msg+"\n" +
+                        "                </div>")
+                }
+
             }
         }
         return ws;
