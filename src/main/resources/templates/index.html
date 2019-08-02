@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/zui.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/css/login.css" media="all">
+    <link href="/css/animate.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <script src="webjars/vue/dist/vue.js"></script>
+    <style> body { background-image: url(images/4.jpg);}</style>
+</head>
+
+<body>
+<div id="main-box"></div>
+<div id="main-content">
+    <div class="login-body  animated fadeInLeft">
+        <div class="login-main pr">
+            <form action="javascript:;" method="post" class="login-form">
+                <h3> 微聊中心 </h3>
+                <h5 style="padding-bottom: 10px"> Chat Center </h5>
+                <!-- 账号登陆 -->
+                <div id="MobileBox" class="item-box"  >
+                    <div class="input-group user-name"> <span class="input-group-addon"><i class="icon-user"></i></span>
+                        <input type="text" id="username" name="username"  class="form-control" placeholder="用户名">
+                    </div>
+                    <div class="input-group password"> <span class="input-group-addon"><i class="icon-lock"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="密码">
+                    </div>
+
+                    <div class="use-qrcode-a"><a class="use-ding" href="javascript:void(0)"><img src="images/ding.png" width="17" height="17" style="margin-top:-2px"> 钉钉账号登陆</a> </div>
+
+
+                    <div class="login_btn_panel">
+                        <button class=" btn btn-primary btn-block btn-lg" onclick="login()" data-ajax="post" type="submit" data-callback="success">登录</button>
+                        <div class="check-tips"></div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * 登陆聊天
+     */
+    function login() {
+        var username = document.getElementById("username")
+        location.href = '/chat/'+username.value;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>轻微聊</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.js"></script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="container">
+        <div class="left">
+            <div  class="top">
+                <input type="text" style="width: 300px" placeholder="Search" />
+                <a href="javascript:;" class="search"></a>
+            </div>
+            <ul class="people">
+                <li style="text-align: center" class="person">
+                    <span  class="name">当前登录用户:</span><span id="person">5人</span>
+                </li>
+                <li class="person">
+                    <img src="/images/thomas.jpg" alt="" />
+                    <span class="name">Thomas Bangalter</span>
+                    <span class="time">2:09 PM</span>
+                    <span class="preview">I was wondering...</span>
+                </li>
+               <!-- <li class="person" data-chat="person2">
+                    <img src="/images/dog.png" alt="" />
+                    <span class="name">Dog Woofson</span>
+                    <span class="time">1:44 PM</span>
+                    <span class="preview">I've forgotten how it felt before</span>
+                </li>
+                <li class="person" data-chat="person3">
+                    <img src="/images/louis-ck.jpeg" alt="" />
+                    <span class="name">Louis CK</span>
+                    <span class="time">2:09 PM</span>
+                    <span class="preview">But we’re probably gonna need a new carpet.</span>
+                </li>
+                <li class="person" data-chat="person4">
+                    <img src="/images/bo-jackson.jpg" alt="" />
+                    <span class="name">Bo Jackson</span>
+                    <span class="time">2:09 PM</span>
+                    <span class="preview">It’s not that bad...</span>
+                </li>
+                <li class="person" data-chat="person5">
+                    <img src="/images/michael-jordan.jpg" alt="" />
+                    <span class="name">Michael Jordan</span>
+                    <span class="time">2:09 PM</span>
+                    <span class="preview">Wasup for the third time like is
+you blind bitch</span>
+                </li>
+                <li class="person" data-chat="person6">
+                    <img src="/images/drake.jpg" alt="" />
+                    <span class="name">Drake</span>
+                    <span class="time">2:09 PM</span>
+                    <span class="preview">howdoyoudoaspace</span>
+                </li>-->
+            </ul>
+        </div>
+        <div class="right">
+
+            <div class="top"><span>To: <span class="name">快乐小家庭</span></span>   欢迎你<span class="name" id="username" th:text="${username}"></span></div>
+
+            <div id="room" style="overflow:auto" class="chat">
+
+                <div class="conversation-start">
+                    <span>Today, 6:48 AM</span>
+                </div>
+
+                <div title="123" style='width: 200px;display:block;word-break: break-all;word-wrap: break-word;' class="bubble you">
+                            888888888888888888888888888888888
+                </div>
+                <div title="123" style='width: 200px;display:block;word-break: break-all;word-wrap: break-word;'  class="bubble me">
+                    Hello,
+                </div>
+
+               <!-- <div style="margin-top: 80%" class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> Better check yourself, you're not looking too good.
+                </div>-->
+            </div>
+
+            <div class="write">
+                <a href="javascript:;" class="write-link attach"></a>
+                <input  id="msg" type="text" style="" />
+                <a href="javascript:;" class="write-link smiley"></a>
+                <a href="javascript:;"  onclick="sendMsgToServer()" class="write-link send"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="text-align:center;margin:1px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    <p>适用浏览器：360、FireFox、Chrome、Opera、傲游、搜狗、世界之窗. 不支持Safari、IE8及以下浏览器。</p>
+</div>
+
+<script>
+    /**
+     * WebSocket客户端
+     *
+     * 使用说明：
+     * 1、WebSocket客户端通过回调函数来接收服务端消息。例如：webSocket.onmessage
+     * 2、WebSocket客户端通过send方法来发送消息给服务端。例如：webSocket.send();
+     */
+    function getWebSocket() {
+        var webSocketUrl = '[[${webSocketUrl}]]';
+        var username = '[[${username}]]'
+        /**
+         *WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
+         * @type {WebSocket}
+         */
+        var ws = new WebSocket("ws://localhost:8080/chat/"+username+"");
+        /**
+         * 当服务端打开连接
+         */
+        ws.onopen = function () {
+        }
+        /**
+         * 当服务端发来消息：1.广播消息 2.更新在线人数
+         */
+        ws.onmessage = function (ev) {
+            console.log('WebSocket收到消息：%c' + ev.data, 'color:green');
+            var message =  JSON.parse(ev.data)
+            $("#person").text(message.onlineCount+"人")
+            var room = $("#room")
+            if(message.type=='ENTER'){
+               /* room.append("<div>\n" +
+                    "<span>"+message.username+"加入了群聊</span>\n" +
+                    "</div>")*/
+            }else if(message.type=='SPEAK'){
+                var loginUser = '[[${username}]]'
+                console.log(loginUser)
+                console.log(message.username)
+                console.log(message.msg)
+                    room.append("<div title=\""+message.username+"\" style='width: 200px;display:block;word-break: break-all;word-wrap: break-word;'   class=\"bubble me\">\n" +
+                        "                    "+message.msg+"\n" +
+                        "                </div>")
+            }
+        }
+        return ws;
+    }
+        var webSocket = getWebSocket();
+
+    /**
+     * 通过WebSocket对象发送消息给服务端
+     */
+    function sendMsgToServer () {
+        var msg = $("#msg")
+        if(msg.val()){
+            webSocket.send(JSON.stringify({username: $('#username').text(), msg: msg.val()}));
+            msg.val(null)
+        }
+    }
+
+</script>
+</body>
+</html>
