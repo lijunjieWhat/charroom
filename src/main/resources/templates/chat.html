@@ -118,7 +118,7 @@ you blind bitch</span>
          *WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
          * @type {WebSocket}
          */
-        var ws = new WebSocket("ws://localhost:8080/chat/"+username+"");
+        var ws = new WebSocket(""+webSocketUrl+"/"+username+"");
         /**
          * 当服务端打开连接
          */
